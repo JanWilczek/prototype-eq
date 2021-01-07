@@ -1,0 +1,29 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2019
+
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PrototypeEQ - VST3", "PrototypeEQ_VST3.vcxproj", "{932BB6C5-ADD6-7F2A-EBD7-B77AB6DFBD5D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1629AA7F-59E7-8EEB-F9A9-F01E3A37DA55} = {1629AA7F-59E7-8EEB-F9A9-F01E3A37DA55}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PrototypeEQ - Shared Code", "PrototypeEQ_SharedCode.vcxproj", "{1629AA7F-59E7-8EEB-F9A9-F01E3A37DA55}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{932BB6C5-ADD6-7F2A-EBD7-B77AB6DFBD5D}.Debug|x64.ActiveCfg = Debug|x64
+		{932BB6C5-ADD6-7F2A-EBD7-B77AB6DFBD5D}.Debug|x64.Build.0 = Debug|x64
+		{932BB6C5-ADD6-7F2A-EBD7-B77AB6DFBD5D}.Release|x64.ActiveCfg = Release|x64
+		{932BB6C5-ADD6-7F2A-EBD7-B77AB6DFBD5D}.Release|x64.Build.0 = Release|x64
+		{1629AA7F-59E7-8EEB-F9A9-F01E3A37DA55}.Debug|x64.ActiveCfg = Debug|x64
+		{1629AA7F-59E7-8EEB-F9A9-F01E3A37DA55}.Debug|x64.Build.0 = Debug|x64
+		{1629AA7F-59E7-8EEB-F9A9-F01E3A37DA55}.Release|x64.ActiveCfg = Release|x64
+		{1629AA7F-59E7-8EEB-F9A9-F01E3A37DA55}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
