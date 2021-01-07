@@ -53,9 +53,13 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+    void setGain(double gain);
+    void setCutoffFrequency(double cutoffFrequency);
+
 private:
     //==============================================================================
-    double sampleRate;
-
+    std::atomic<double> gain;
+    std::atomic<double> cutoffFrequency;
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PrototypeEQAudioProcessor)
 };

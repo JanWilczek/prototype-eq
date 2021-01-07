@@ -59,3 +59,15 @@ void PrototypeEQAudioProcessorEditor::resized()
     gain.setBounds(40, 30, 20, getHeight() - 60);
     cutoff_frequency.setBounds(gain.getRight() + 100, gain.getY() + gain.getHeight() / 3, 100, 100);
 }
+
+void PrototypeEQAudioProcessorEditor::sliderValueChanged(juce::Slider* slider)
+{
+    if (slider == &gain)
+    {
+        audioProcessor.setGain(gain.getValue());
+    }
+    else if (slider == &cutoff_frequency)
+    {
+        audioProcessor.setCutoffFrequency(cutoff_frequency.getValue());
+    }
+}

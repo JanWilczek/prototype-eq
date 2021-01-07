@@ -14,7 +14,8 @@
 //==============================================================================
 /**
 */
-class PrototypeEQAudioProcessorEditor  : public juce::AudioProcessorEditor
+class PrototypeEQAudioProcessorEditor  : public juce::AudioProcessorEditor,
+                                         private juce::Slider::Listener
 {
 public:
     PrototypeEQAudioProcessorEditor (PrototypeEQAudioProcessor&);
@@ -25,8 +26,8 @@ public:
     void resized() override;
 
 private:
-    // This reference is provided as a quick way for your editor to
-    // access the processor object that created it.
+    void sliderValueChanged(juce::Slider* slider) override;
+
     PrototypeEQAudioProcessor& audioProcessor;
     juce::Slider gain;
     juce::Slider cutoff_frequency;

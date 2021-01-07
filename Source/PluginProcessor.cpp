@@ -93,7 +93,6 @@ void PrototypeEQAudioProcessor::changeProgramName (int index, const juce::String
 //==============================================================================
 void PrototypeEQAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    this->sampleRate = sampleRate;
 }
 
 void PrototypeEQAudioProcessor::releaseResources()
@@ -141,11 +140,25 @@ void PrototypeEQAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, 
     // the samples and the outer loop is handling the channels.
     // Alternatively, you can process the samples with the channels
     // interleaved by keeping the same state.
+    auto gain = this->gain.load();
+    auto cutoffFrequency = this->cutoffFrequency.load();
+
+    auto c = tanh(juce::MathConstants<double>::pi * cutoffFrequency / getSampleRate());
+    auto v0 = pow(10.0, gain / 20.0);
+    auto h0 = v0 - 1;
+
+    auto a = gain > 0 ? (c - 1) / (c + 1) : (c - v0) / (c + v0);
+
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         auto* channelData = buffer.getWritePointer (channel);
 
-        // ..do something to the data...
+        for (int i = 0; i < buffer.getNumSamples(); ++i)
+        {
+            auto x = channelData[i];
+            auto z = ...
+            channelData = (x + z) * h0 / 2 + x
+        }
     }
 }
 
@@ -172,6 +185,16 @@ void PrototypeEQAudioProcessor::setStateInformation (const void* data, int sizeI
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
+}
+
+void PrototypeEQAudioProcessor::setGain(double g)
+{
+    gain.store(g);
+}
+
+void PrototypeEQAudioProcessor::setCutoffFrequency(double f)
+{
+    cutoffFrequency.store(f);
 }
 
 //==============================================================================
