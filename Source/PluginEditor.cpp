@@ -18,22 +18,25 @@ PrototypeEQAudioProcessorEditor::PrototypeEQAudioProcessorEditor (PrototypeEQAud
     setSize (400, 300);
 
     gain.setSliderStyle(juce::Slider::LinearBarVertical);
-    gain.setRange(-60.0, 10.0, 0.1);
+    gain.setRange(-80.0, 20.0, 0.1);
     gain.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
     gain.setPopupDisplayEnabled(true, false, this);
     gain.setTextValueSuffix(" dB");
     gain.setValue(0.0);
+    gain.addListener(this);
 
     addAndMakeVisible(&gain);
 
-    cutoff_frequency.setSliderStyle(juce::Slider::Rotary);
-    cutoff_frequency.setRange(0, processor.getSampleRate() / 2, 0.5);
-    cutoff_frequency.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
-    cutoff_frequency.setPopupDisplayEnabled(true, false, this);
-    cutoff_frequency.setTextValueSuffix(" Hz");
-    cutoff_frequency.setValue(2000.0);
+    cutoffFrequency.setSliderStyle(juce::Slider::Rotary);
+    cutoffFrequency.setRange(0, processor.getSampleRate() / 2, 0.5);
+    cutoffFrequency.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
+    cutoffFrequency.setPopupDisplayEnabled(true, false, this);
+    cutoffFrequency.setTextValueSuffix(" Hz");
+    cutoffFrequency.setValue(2000.0);
+    cutoffFrequency.setSkewFactor(0.5);
+    cutoffFrequency.addListener(this);
 
-    addAndMakeVisible(&cutoff_frequency);
+    addAndMakeVisible(&cutoffFrequency);
 }
 
 PrototypeEQAudioProcessorEditor::~PrototypeEQAudioProcessorEditor()
@@ -51,13 +54,13 @@ void PrototypeEQAudioProcessorEditor::paint (juce::Graphics& g)
     auto textBoxWidth = 100;
     g.drawFittedText("Gain [dB]", juce::Rectangle<int>{gain.getX() + gain.getWidth() / 2 - textBoxWidth / 2, gain.getY() - 40, textBoxWidth, 40}, juce::Justification::centred, 1);
     auto cutoffTextWidth = 200;
-    g.drawFittedText("Cut-off frequency [Hz]", juce::Rectangle<int>{cutoff_frequency.getX() + cutoff_frequency.getWidth() / 2 - cutoffTextWidth / 2, gain.getY() - 40, cutoffTextWidth, 40}, juce::Justification::centred, 1);
+    g.drawFittedText("Cut-off frequency [Hz]", juce::Rectangle<int>{cutoffFrequency.getX() + cutoffFrequency.getWidth() / 2 - cutoffTextWidth / 2, gain.getY() - 40, cutoffTextWidth, 40}, juce::Justification::centred, 1);
 }
 
 void PrototypeEQAudioProcessorEditor::resized()
 {
     gain.setBounds(40, 30, 20, getHeight() - 60);
-    cutoff_frequency.setBounds(gain.getRight() + 100, gain.getY() + gain.getHeight() / 3, 100, 100);
+    cutoffFrequency.setBounds(gain.getRight() + 100, gain.getY() + gain.getHeight() / 3, 100, 100);
 }
 
 void PrototypeEQAudioProcessorEditor::sliderValueChanged(juce::Slider* slider)
@@ -66,8 +69,8 @@ void PrototypeEQAudioProcessorEditor::sliderValueChanged(juce::Slider* slider)
     {
         audioProcessor.setGain(gain.getValue());
     }
-    else if (slider == &cutoff_frequency)
+    else if (slider == &cutoffFrequency)
     {
-        audioProcessor.setCutoffFrequency(cutoff_frequency.getValue());
+        audioProcessor.setCutoffFrequency(cutoffFrequency.getValue());
     }
 }

@@ -145,13 +145,10 @@ void PrototypeEQAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, 
 
     auto a = gain > 0 ? (c - 1) / (c + 1) : (c - v0) / (c + v0);
 
-    for (auto& allpass : allpassPerChannel)
-    {
-        allpass.setCoefficients(a, 1, 0, a, 0);
-    }
-
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
+        allpassPerChannel[channel].setCoefficients(a, 1, 0, a, 0);
+
         auto* channelData = buffer.getWritePointer (channel);
 
         for (int i = 0; i < buffer.getNumSamples(); ++i)
