@@ -364,3 +364,6 @@ FodyWeavers.xsd
 # Output directories
 x64/
 x32/
+
+# Reaper test file directory
+Test/

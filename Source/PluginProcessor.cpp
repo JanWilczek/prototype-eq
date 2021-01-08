@@ -11,16 +11,18 @@
 
 //==============================================================================
 PrototypeEQAudioProcessor::PrototypeEQAudioProcessor()
+    :
 #ifndef JucePlugin_PreferredChannelConfigurations
-     : AudioProcessor (BusesProperties()
+     AudioProcessor (BusesProperties()
                      #if ! JucePlugin_IsMidiEffect
                       #if ! JucePlugin_IsSynth
                        .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ),
 #endif
+     allpassPerChannel(getTotalNumInputChannels())
 {
 }
 
@@ -134,12 +136,6 @@ void PrototypeEQAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, 
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-    // This is the place where you'd normally do the guts of your plugin's
-    // audio processing...
-    // Make sure to reset the state if your inner loop is processing
-    // the samples and the outer loop is handling the channels.
-    // Alternatively, you can process the samples with the channels
-    // interleaved by keeping the same state.
     auto gain = this->gain.load();
     auto cutoffFrequency = this->cutoffFrequency.load();
 
@@ -149,6 +145,11 @@ void PrototypeEQAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, 
 
     auto a = gain > 0 ? (c - 1) / (c + 1) : (c - v0) / (c + v0);
 
+    for (auto& allpass : allpassPerChannel)
+    {
+        allpass.setCoefficients(a, 1, 0, a, 0);
+    }
+
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         auto* channelData = buffer.getWritePointer (channel);
@@ -156,8 +157,8 @@ void PrototypeEQAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, 
         for (int i = 0; i < buffer.getNumSamples(); ++i)
         {
             auto x = channelData[i];
-            auto z = ...
-            channelData = (x + z) * h0 / 2 + x
+            auto z = allpassPerChannel[channel].filter(x);
+            channelData[i] = (x + z) * h0 / 2 + x;
         }
     }
 }

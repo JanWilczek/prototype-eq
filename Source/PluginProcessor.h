@@ -9,6 +9,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "BiQuad.h"
 
 //==============================================================================
 /**
@@ -60,6 +61,7 @@ private:
     //==============================================================================
     std::atomic<double> gain;
     std::atomic<double> cutoffFrequency;
+    std::vector<proteq::BiQuad> allpassPerChannel;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PrototypeEQAudioProcessor)
 };

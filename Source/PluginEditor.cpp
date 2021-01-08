@@ -18,7 +18,7 @@ PrototypeEQAudioProcessorEditor::PrototypeEQAudioProcessorEditor (PrototypeEQAud
     setSize (400, 300);
 
     gain.setSliderStyle(juce::Slider::LinearBarVertical);
-    gain.setRange(-10.0, 10.0, 0.1);
+    gain.setRange(-60.0, 10.0, 0.1);
     gain.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
     gain.setPopupDisplayEnabled(true, false, this);
     gain.setTextValueSuffix(" dB");
